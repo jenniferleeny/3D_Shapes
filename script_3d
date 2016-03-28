@@ -1,12 +1,4 @@
-#test box mesh
-box
-0 0 0 200 100 400
-ident
-xrotate
-20
-yrotate
-20
-translate
-150 200 0
-apply
-display
+line
+100 100 0 400 400 0
+save
+quit

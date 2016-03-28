@@ -168,7 +168,7 @@ void parse_file ( char * filename,
     else if ( strncmp(line, "ident", strlen(line)) == 0 ) {
       ident(transform);
     }
-
+    //new stuff
     else if ( strncmp(line, "sphere", strlen(line)) == 0 ) {
       fgets(line, 255, f);
       sscanf(line, "%lf %lf %lf", &x, &y, &z);
@@ -185,6 +185,8 @@ void parse_file ( char * filename,
       sscanf(line, "%lf %lf %lf %lf", &x, &y, &x1, &y1);
       add_torus(pm, x, y, x1, y1, 0.01);
     }
+    //end new stuff
+
     else if ( strncmp(line, "apply", strlen(line)) == 0 ) {
       //printf("APPLY!\n");
       //print_matrix( transform );
