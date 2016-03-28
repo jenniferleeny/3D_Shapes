@@ -13,25 +13,25 @@ int main( int argc, char** argv ) {
   screen s;
 
   color c;
-  c.red = 225;
+  c.red = 0;
   c.blue = 0;
-  c.green = 0;
+  c.green =225;
 
+  struct matrix *points;
   struct matrix *edges;
   struct matrix *transform;
   clear_screen(s);
   
+  points = new_matrix(4, 4);
   edges = new_matrix(4, 4);
   transform = new_matrix(4, 4);
-  
-  add_circle(edges, 250, 250, 100, 0.05);
-  draw_lines(edges, s, c);
-  display(s);
-  /*if ( argc == 2 )
-    parse_file( argv[1], transform, edges, s );
+
+  if ( argc == 2 )
+    parse_file("script_3d", transform, edges, s);
+	       //argv[1], transform, edges, s );
   else
     parse_file( "stdin", transform, edges, s );
-  */
+  free_matrix( points );
   free_matrix( transform );
   free_matrix( edges );
 }  

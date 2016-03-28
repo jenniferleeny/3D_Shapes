@@ -27,9 +27,18 @@
 void add_sphere( struct matrix * points, 
 		 double cx, double cy, double r, 
 		 double step ) {
-  
+  //struct matrix *temp = new_matrix(4, 4);
+  double t, p;
+  double x1, y1, z1;
+  for (p = 0; p < 1; p+= step) {
+    for (t = 0; t < 1; t+=step) {
+      x1 = r*cos(t*M_PI) + cx;
+      y1 = r*sin(t*M_PI) * cos(2*M_PI*p) + cy;
+      z1 = r*sin(t*M_PI) * sin(2*M_PI*p);// + cz;
+      add_edge(points, x1, y1, z1, x1, y1, z1);
+    }  
+  }
 }
-
 /*======== void generate_sphere() ==========
   Inputs:   struct matrix * points
             double cx
@@ -49,13 +58,14 @@ void add_sphere( struct matrix * points,
 void generate_sphere( struct matrix * points, 
 		      double cx, double cy, double r, 
 		      double step ) {
-  int t;
-  for (t = 0; t < 1 + step; t+=step) {
-    add_circle(points, cx, cy, r, step);
-    //draw_lines(points);
-  }
-}    
+  /*  double x ,y , z, t;
+  for (t = 0; t < 1; t+=step) {
+    x = r*cos(t*M_PI) + cx;
+    y = r*sin(t*M_PI)cos(2M_PI*t) + cy;
+    z = r*sin(t*M_PI)sin(2M_PI*t) + cz;
+    } */   
 
+}
 /*======== void add_torus() ==========
   Inputs:   struct matrix * points
             double cx
@@ -77,6 +87,25 @@ void generate_sphere( struct matrix * points,
 void add_torus( struct matrix * points, 
 		double cx, double cy, double r1, double r2, 
 		double step ) {
+  double x, y, z;
+  double t, p;
+  for (p = 0; p < 1.001; p+= step) {
+    for (t = 0; t < 1.001; t+= step) {
+      x = r1*cos(t*2*M_PI) + cx;
+      y = cos(p*2*M_PI)*(r1*sin(t*2*M_PI) + r2) + cy;
+      z = cos(p*2*M_PI)*(r1*sin(t*2*M_PI) + r2);
+      add_edge(points, x, y, z, x, y, z);
+    }
+  }
+  struct matrix *rotY = new_matrix(4, 4);
+  rotY = make_rotY(2*M_PI*60/360);
+
+  struct matrix *rotX = new_matrix(4, 4);
+  rotX = make_rotX(2*M_PI*30/360);
+
+  matrix_mult(rotX, points);
+  //matrix_mult(rotY, points);
+  
 }
 
 /*======== void generate_torus() ==========
@@ -118,6 +147,32 @@ void generate_torus( struct matrix * points,
 void add_box( struct matrix * points,
 	      double x, double y, double z,
 	      double width, double height, double depth ) {
+  add_edge(points, x, y, z, x, y, z - depth);
+  add_edge(points, x, y, z, x, y - height, z);
+
+  add_edge(points, x, y, z - depth, x - width, y, z - depth);
+  add_edge(points, x, y, z - depth, x, y - height, z - depth);
+
+  add_edge(points, x - width, y, z - depth, x - width, y, z);
+  add_edge(points, x - width, y, z - depth, x - width, y - height, z - depth);
+
+  add_edge(points, x - width, y, z, x, y, z);
+  add_edge(points, x - width, y, z, x - width, y - height, z);
+
+  y = y - height;
+  add_edge(points, x, y, z, x, y, z - depth);
+  add_edge(points, x, y, z - depth, x - width, y, z - depth);
+  add_edge(points, x - width, y, z - depth, x - width, y, z);
+  add_edge(points, x - width, y, z, x, y, z);
+
+  struct matrix *rotY = new_matrix(4, 4);
+  rotY = make_rotY(2*M_PI*30/360);
+
+  struct matrix *rotX = new_matrix(4, 4);
+  rotX = make_rotX(2*M_PI*30/360);
+
+  matrix_mult(rotX, points);
+  matrix_mult(rotY, points);
 }
   
 /*======== void add_circle() ==========

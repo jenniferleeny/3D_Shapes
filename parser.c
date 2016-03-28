@@ -88,10 +88,9 @@ void parse_file ( char * filename,
   
   while ( fgets(line, 255, f) != NULL ) {
     line[strlen(line)-1]='\0';
-    //printf(":%s:\n",line);
+    printf(":%s:\n",line);
     double x, y, z, x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
    
-    
     if ( strncmp(line, "line", strlen(line)) == 0 ) {
       //      printf("LINE!\n");
       fgets(line, 255, f);
@@ -168,6 +167,23 @@ void parse_file ( char * filename,
     }
     else if ( strncmp(line, "ident", strlen(line)) == 0 ) {
       ident(transform);
+    }
+
+    else if ( strncmp(line, "sphere", strlen(line)) == 0 ) {
+      fgets(line, 255, f);
+      sscanf(line, "%lf %lf %lf", &x, &y, &z);
+      add_sphere(pm, x, y, z, 0.01);
+      //printf( "%lf %lf %lf\n", x, y, z);
+    }
+    else if ( strncmp(line, "box", strlen(line)) == 0) {
+      fgets(line, 255, f);
+      sscanf(line, "%lf %lf %lf %lf %lf %lf", &x, &y, &z, &x1, &y1, &z1);
+      add_box(pm, x, y, z, x1, y1, z1);
+    }
+    else if ( strncmp(line, "torus", strlen(line)) == 0) {
+      fgets(line, 255, f);
+      sscanf(line, "%lf %lf %lf %lf", &x, &y, &x1, &y1);
+      add_torus(pm, x, y, x1, y1, 0.01);
     }
     else if ( strncmp(line, "apply", strlen(line)) == 0 ) {
       //printf("APPLY!\n");
