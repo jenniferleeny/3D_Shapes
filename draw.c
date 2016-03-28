@@ -49,6 +49,11 @@ void add_sphere( struct matrix * points,
 void generate_sphere( struct matrix * points, 
 		      double cx, double cy, double r, 
 		      double step ) {
+  int t;
+  for (t = 0; t < 1 + step; t+=step) {
+    add_circle(points, cx, cy, r, step);
+    //draw_lines(points);
+  }
 }    
 
 /*======== void add_torus() ==========
@@ -141,12 +146,14 @@ void add_circle( struct matrix * points,
     x = r * cos( 2 * M_PI * t ) + cx;
     y = r * sin( 2 * M_PI * t ) + cy;
     
-    add_edge( points, x0, y0, 0, x, y, 0 );
+    add_edge( points, x0, y0, 0, x0, y0, 0 );
+    //add_point(points, x, y, 0);
     x0 = x;
     y0 = y;
   }
 
-  add_edge( points, x0, y0, 0, cx + r, cy, 0 );
+  //add_edge( points, x0, y0, 0, cx + r, cy, 0 );
+  //add_point(points, x, y, 0);
 }
 
 /*======== void add_curve() ==========
